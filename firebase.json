@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "site": "pay-izinga",
+    "public": "dist/izinga-pay",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

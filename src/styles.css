@@ -1,0 +1,152 @@
+@font-face {
+    font-family: Calibri;
+    src: url("/assets/fonts/Calibri.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: Catamaran;
+    src: url("/assets/fonts/Catamaran-Medium.ttf") format("opentype");
+}
+
+.page-header {
+    color: #ffffff !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+#app-root {
+    min-height: calc(100vh - 227px);
+}
+
+.bg-dark {
+    background-color: #10a59f !important;
+    color: white !important;
+}
+
+.bg-light {
+    color: #d69447 !important;
+}
+
+.bg-clear {
+    background-color: #ffffff00 !important;
+}
+
+.bg-light .nav-link {
+    color: #d69447 !important;
+    font-size: larger;
+}
+
+.product {
+    color: #d69447  ;
+}
+
+mat-icon {
+    color: white !important;
+}
+
+.bg-ukheshe {
+    background-color: #f15b25;
+}
+
+nav .logo {
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #d69447;
+    height: 60px;
+    width: 60px;
+}
+
+.payment-logo {
+    height: 20px;
+}
+
+.navbar {
+    z-index: 4;
+}
+
+.btn {
+    font-size: 1rem;
+    font-weight: 300;
+    border: none;
+    border-radius: 1rem;
+    height: 50px;
+}
+
+@media(max-width: 380px) {
+    .btn {
+        width: 100% !important;
+    }
+}
+
+footer {
+    padding-left: 16px;
+    padding-right: 16px;
+    background-repeat: no-repeat !important;
+    background: linear-gradient(0deg, #d6944798 28%, #ffffff 93%);
+}
+
+footer * {
+    color: white;
+    font-weight: 500;
+}
+
+footer h5 {
+    color: #d69447 !important;
+}
+
+html, body {
+    height: 100%;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+.error {
+    color: red;
+}
+
+body {
+    min-height: 100vh !important;
+    background-repeat: no-repeat !important;
+    background: rgb(223,147,45);
+    background: linear-gradient(180deg, rgba(223,147,45,1) 0%, rgba(255,255,255,1) 47%, rgba(223,147,45,1) 100%);
+    font-family: Catamaran
+}
+
+/*animations*/
+.digit {
+    opacity: 0;
+    -webkit-transform: scale(0.9);
+       -moz-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+         -o-transform: scale(0.9);
+            transform: scale(0.9);
+    -webkit-transition: all 1s ease-in-out;
+       -moz-transition: all 1s ease-in-out;
+        -ms-transition: all 1s ease-in-out;
+         -o-transition: all 1s ease-in-out;
+            transition: all 1s ease-in-out;
+  }
+  .visible {
+    opacity: 1;
+    -webkit-transform: none;
+       -moz-transform: none;
+        -ms-transform: none;
+         -o-transform: none;
+            transform: none;
+  }
