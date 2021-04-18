@@ -35,9 +35,9 @@ export class PayfastComponent implements OnInit {
       ["merchant_key" , environment.payfast_merchant_key],
       ["amount" , `${this.order.totalAmount}`],
       ["item_name", this.storeName],
-      ["return_url", `${this.callBackUrl}?Status=Complete&type=payfast&TransactionReference=${this.order.id}`],
-      ["cancel_url", `${this.callBackUrl}?Status=cancel&type=payfast&TransactionReference=${this.order.id}`],
-      ["notify_url", `${this.callBackUrl}?Status=Complete&type=payfast&TransactionReference=${this.order.id}`],
+      ["return_url", `${this.callBackUrl}/complete/${this.order.id}`],
+      ["cancel_url", `${this.callBackUrl}/cancel/${this.order.id}`],
+      ["notify_url", `${this.callBackUrl}/complete/${this.order.id}`],
       ["m_payment_id",  this.order.id]
     ])
 
@@ -48,10 +48,6 @@ export class PayfastComponent implements OnInit {
       this.data.push(entry)
     }
 
-  }
-
-  get paymentUrl() {
-    return `${environment.payFastUrl}?cmd=_paynow&receiver=11522007&item_name=Celeste+Clothing-${this.order.id}&item_description=Online-Shop&amount=${this.order.totalAmount}&return_url=${this.ozo_payment_notify_url}&cancel_url=${this.ozow_payment_cancel_url}`
   }
 
 

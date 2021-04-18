@@ -1,7 +1,7 @@
 <div class="mt-3 d-flex justify-content-center">
-    <img src="../assets/images/izinga-logo.png" width="130px">
+    <img src="../assets/images/izinga-logo.png" width="130px" height="50.61px">
   </div>
-  <div *ngIf="order" class="container">
+  <div *ngIf="order && shopName" class="container">
   
     <div class="row" >
   
@@ -74,7 +74,7 @@
                 </div>
             </div>
   
-        <app-ozow-payment [paymentUrl]="ozowPaymentUrl"></app-ozow-payment>
+       <!-- <app-ozow-payment [paymentUrl]="ozowPaymentUrl"></app-ozow-payment> -->
         <app-payfast [order]="order" [storeName]="shopName" [callBackUrl]="callBackUrl"> </app-payfast>
   
         </div>

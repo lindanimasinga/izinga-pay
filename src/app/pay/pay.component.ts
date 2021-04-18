@@ -39,10 +39,10 @@ export class PayComponent {
 
   ngOnInit(): void {
     console.log(`loading page`)
+    status = this.route.paramMap['status']
     this.route.queryParams.subscribe(queryParamMap => {
       var transactionId = queryParamMap['TransactionId']
       var transactionRef: string = queryParamMap['TransactionReference']
-      var status = queryParamMap['Status']
       var paymentType: string = queryParamMap['type']
       var orderId = transactionRef.replace("ord-", "")
       this.callBackUrl = queryParamMap['callback']
@@ -55,14 +55,16 @@ export class PayComponent {
         .subscribe(order => {
           this.order = order
           if (status == "Complete" || order.stage == Order.StageEnum._1WAITINGSTORECONFIRM) {
-            window.location.href = `${this.callBackUrl}/?Status=Completed&TransactionId=${transactionId}&TransactionReference=${transactionRef}`
+            window.location.href = `${this.callBackUrl}/complete?TransactionId=${transactionId}&TransactionReference=${transactionRef}`
           } else {
             this.izingaService.getStoreById(order.shopId)
               .subscribe(store => {
+                this.shopName = store.name
+                /*
                 this.paymentService.generatePaymentUrl(this.order, store.name)
                   .subscribe(url => {
                     this.ozowPaymentUrl = url;
-                  })
+                  })*/
               })
           }
         },
