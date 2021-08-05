@@ -33,7 +33,7 @@ export class PayfastComponent implements OnInit {
     var dataMap = new Map<string, any>([
       ["merchant_id" , environment.payfast_merchant_id],
       ["merchant_key" , environment.payfast_merchant_key],
-      ["amount" , `${this.order.totalAmount}`],
+      ["amount" , this.order.minimumDepositAllowedPerc == 1 ? `${this.order.totalAmount}` : `${this.order.depositAmount}`],
       ["item_name", this.storeName],
       ["return_url", `${this.callBackUrl}/complete/${this.order.id}`],
       ["cancel_url", `${this.callBackUrl}/cancel/${this.order.id}`],

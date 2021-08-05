@@ -32,6 +32,8 @@ export interface Order {
     stage?: Order.StageEnum;
     totalAmount?: number;
     freeDelivery?: boolean;
+    minimumDepositAllowedPerc?: number;
+    depositAmount?: number
 }
 
 export namespace Order {

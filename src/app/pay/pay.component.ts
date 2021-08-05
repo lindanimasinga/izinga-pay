@@ -26,6 +26,7 @@ export class PayComponent {
   orderCompleted = false
   shopName: string
   callBackUrl: string
+  buttonMessage: string
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +55,7 @@ export class PayComponent {
       this.izingaService.getOrderById(orderId)
         .subscribe(order => {
           this.order = order
+          this.buttonMessage = order.minimumDepositAllowedPerc < 1 ? "Pay Deposit" : "Pay Now";
           if (status == "Complete" || order.stage == Order.StageEnum._1WAITINGSTORECONFIRM) {
             window.location.href = `${this.callBackUrl}/complete?TransactionId=${transactionId}&TransactionReference=${transactionRef}`
           } else {
