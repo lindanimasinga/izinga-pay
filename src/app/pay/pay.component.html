@@ -37,6 +37,16 @@
                 </div>-->
             </div>
   
+            <ul class="list-group mt-5">
+                <li *ngIf="order.minimumDepositAllowedPerc == 1" class="list-group-item d-flex justify-content-between">
+                    <span>Total (ZAR)</span>
+                    <strong>{{order.totalAmount | currency:'R'}}</strong>
+                </li>
+                <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between">
+                    <span>Deposit to pay ({{order.minimumDepositAllowedPerc * 100}}% + Shipping)</span>
+                    <strong>{{order.depositAmount | currency:'R'}}</strong>
+                </li>
+            </ul>
   
             <div *ngIf="paymentSelected == 'ozow'" class="row  mt-3 align-self-end">
                 <div class="col-md-12">
@@ -65,7 +75,7 @@
                 </div>
             </div>
   
-            <div *ngIf="paymentSelected == 'payFast'" class="row  mt-3">
+            <div *ngIf="paymentSelected == 'payFast'" class="row">
                 <div class="col-md-12">
                     <button class="btn btn-lg btn-block btn-primary bg-dark mt-5 shadow-sm" data-toggle="modal"
                         data-target="#payfast-modal">
@@ -99,11 +109,11 @@
                     <span class="text-muted" *ngIf="order.freeDelivery">FREE</span>
                     <span class="text-muted"*ngIf="!order.freeDelivery">{{order.shippingData.fee + order.serviceFee | currency:'R'}}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between" [ngClass]="{'to-pay': order.minimumDepositAllowedPerc == 1}">
+                <li class="list-group-item d-flex justify-content-between">
                     <span>Total (ZAR)</span>
                     <strong>{{order.totalAmount | currency:'R'}}</strong>
                 </li>
-                <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between to-pay">
+                <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between">
                     <span>Deposit to pay ({{order.minimumDepositAllowedPerc * 100}}% + Shipping)</span>
                     <strong>{{order.depositAmount | currency:'R'}}</strong>
                 </li>
