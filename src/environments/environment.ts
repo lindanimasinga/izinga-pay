@@ -22,7 +22,7 @@ export var environment = {
   ozow_site_code: "CUR-CUR-003",
   ozow_country_code: "ZA",
   ozow_currency_code: "ZAR",
-  ozo_payment_notify_url: `${window.location.origin}/payment`,
+  ozo_payment_notify_url: "https://h1eub1c3w8.execute-api.af-south-1.amazonaws.com/default",
   ozow_succeess_url: `${window.location.origin}/payment`,
   ozow_payment_cancel_url:`${window.location.origin}/payment`,
   ozow_error_url: `${window.location.origin}/payment`,

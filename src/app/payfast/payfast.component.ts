@@ -37,7 +37,7 @@ export class PayfastComponent implements OnInit {
       ["item_name", this.storeName],
       ["return_url", `${this.callBackUrl}/complete/${this.order.id}`],
       ["cancel_url", `${this.callBackUrl}/cancel/${this.order.id}`],
-      ["notify_url", `${this.callBackUrl}/complete/${this.order.id}`],
+      ["notify_url", `${this.ozo_payment_notify_url}/${this.order.id}?status=Complete&type=payfast&TransactionReference=${this.order.id}&isProd=${environment.production}`],
       ["m_payment_id",  this.order.id]
     ])
 
