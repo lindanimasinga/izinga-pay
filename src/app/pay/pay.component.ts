@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { PaymentService } from '../service/payment.service';
 import { Order } from '../model/models';
 import { StorageService } from '../service/storage-service.service';
-import { mergeMap, map, delay } from 'rxjs/operators';
 import { IzingaOrderManagementService } from '../service/izinga-order-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+
+declare var YocoSDK: any;
 
 @Component({
   selector: 'app-pay',
@@ -28,10 +27,12 @@ export class PayComponent {
   callBackUrl: string
   buttonMessage: string
 
+  inline;
+  sdk
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private paymentService: PaymentService,
     private storageService: StorageService,
     private izingaService: IzingaOrderManagementService) {
   }
@@ -57,7 +58,7 @@ export class PayComponent {
           this.order = order
           this.buttonMessage = order.minimumDepositAllowedPerc < 1 ? "Pay Deposit" : "Pay Now";
           if (status == "Complete" || order.stage == Order.StageEnum._1WAITINGSTORECONFIRM) {
-            window.location.href = `${this.callBackUrl}/complete?TransactionId=${transactionId}&TransactionReference=${transactionRef}`
+            window.location.href = `${this.callBackUrl}/order/${orderId}`
           } else {
             this.izingaService.getStoreById(order.shopId)
               .subscribe(store => {
@@ -71,11 +72,10 @@ export class PayComponent {
           }
         },
           (error) => {
-            console.log("error is " + error)
+            console.error("error is " + error)
           },
           () => this.paymentBusy = false
         )
     })
-
   }
 }

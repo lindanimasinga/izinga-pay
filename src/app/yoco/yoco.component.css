@@ -1,0 +1,31 @@
+.card {
+    border-radius: 25px;
+    border: none;
+    min-height: 215px;
+    background: var(--bkg-card-color);
+}
+
+.one-liner {
+    color: white !important;
+}
+
+.logo {
+    height: 25px;
+    margin-left: 8px;
+    font-size: small;
+}
+
+.logo {
+    height: 25px;
+}
+
+.visa {
+    height: 18px;
+}
+
+.pay-success {
+    display: flex;
+    position: absolute;
+    bottom: 75px;
+    color: var(--bkg-color);
+}

@@ -1,4 +1,4 @@
 .to-pay {
-    color: white;
+    color: var(--bkg-color);
     background-color: #D47058;
 }

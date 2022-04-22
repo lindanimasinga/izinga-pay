@@ -37,7 +37,7 @@ export class IzingaOrderManagementService {
 
   finishOrder(order: Order) : Observable<Order> {
     return this.http
-        .patch<Order>(`${environment.izingaUrl}order/${order.id}`, order, {headers: this.headers})
+        .patch<Order>(`${environment.izingaUrl}/order/${order.id}`, order, {headers: this.headers})
         .pipe(
           catchError((error: HttpErrorResponse) => {
             this.storage.errorMessage = error.error.message

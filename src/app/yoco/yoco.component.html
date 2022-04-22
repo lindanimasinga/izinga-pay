@@ -1,0 +1,54 @@
+<div *ngIf="!orderSuccessful">
+<div class="card p-3">
+    <form id="payment-form" method="POST">  
+        <div class="one-liner">
+        <div id="card-frame">
+            <!-- Yoco Inline form will be added here -->
+        </div>
+        </div>
+        <p class="success-payment-message"></p>
+    </form>
+    <div class="d-flex justify-content-end">
+        <span class="logo pt-1">powered by</span>
+        <img class="logo align-middle" src="../../assets/images/yoco-logo.webp">
+        <img class="logo align-middle p-1" src="../../assets/images/visa_logo.png">
+        <img class="logo align-middle" src="../../assets/images/mastercard.png">
+    </div>
+</div>
+
+<ul class="list-group mt-3 text-muted">
+    <li *ngIf="order.minimumDepositAllowedPerc == 1" class="list-group-item d-flex justify-content-between">
+        <span>Total (ZAR)</span>
+        <strong>{{order.totalAmount | currency:'R'}}</strong>
+    </li>
+    <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between text-muted">
+        <span>Deposit to pay ({{order.minimumDepositAllowedPerc * 100}}% + Shipping)</span>
+        <strong>{{order.depositAmount | currency:'R'}}</strong>
+    </li>
+</ul>
+
+<div *ngIf="!isBusy" class="row mt-5 mb-5">
+    <div class="col-md-12">
+        <button id="pay-button" (click)="startYocoPayment($event)" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
+            Pay
+        </button>
+    </div>
+</div>
+
+<div *ngIf="isBusy" class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+            <lottie-player src="../../assets/images/lottie/verify-card.json"  background="transparent"  speed="1"  style="width: 100px; height: 100px;"  loop autoplay></lottie-player>
+        </div>
+    </div>
+</div>
+</div>
+
+<div *ngIf="orderSuccessful">
+    <div class="d-flex justify-content-center">
+        <lottie-player src="../../assets/images/lottie/done.json"  background="transparent"  speed="1"  style="width: 230px;" autoplay></lottie-player>
+    </div>
+    <div class="pay-success d-flex justify-content-center">
+        <div class="h3 text-center">Payment successful. Please close the window.</div>
+    </div>
+</div>
