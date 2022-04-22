@@ -27,5 +27,5 @@
     display: flex;
     position: absolute;
     bottom: 75px;
-    color: var(--bkg-color);
+    color: var(--text-color);
 }

@@ -13,7 +13,7 @@
 }
 
 .list-group-item {
-    background-color: var(--bkg-card-color);
+    background-color: var(--bkg-form-color);
     color: var(--text-color);
 }
 
@@ -146,8 +146,9 @@ body {
   }
   body.dark-theme {
     --text-color: #eee;
-    --bkg-color: #F8F7F7;
-    --bkg-card-color: #2D2D2D;
+    --bkg-color: #212121;
+    --bkg-card-color: #F8F7F7;
+    --bkg-form-color: #2D2D2D;
     --btn-txt-color: rgb(46, 43, 43);
     --btn-bg-color: rgb(20, 211, 195);
     --bkg-logo: url('/assets/images/izinga-logo.png')
