@@ -24,6 +24,8 @@ export class YocoComponent implements OnInit {
 
   isBusy = false
 
+  payOndeliery = false
+
   constructor(private orderService: IzingaOrderManagementService) { }
 
   ngOnInit(): void {
@@ -40,6 +42,11 @@ export class YocoComponent implements OnInit {
       // this ID matches the id of the element we created earlier.
       this.inline.mount('#card-frame');
     }, 100)
+  }
+
+  startCODPayment() {
+    this.order.paymentType = Order.PaymentTypeEnum.SPEED_POINT
+    this.finishOrder()
   }
 
   startYocoPayment(envent: any) {
@@ -59,7 +66,9 @@ export class YocoComponent implements OnInit {
       } else {
         const token = result;
         console.log(`token is ${token.id}`)
-        this.finishOrder(token.id)
+        this.order.description = `yoco-${token}`
+        this.order.paymentType = Order.PaymentTypeEnum.YOCO
+        this.finishOrder()
       }
     }).catch(function (error) {
       // Re-enable button now that request is complete
@@ -69,9 +78,7 @@ export class YocoComponent implements OnInit {
     });
   }
 
-  finishOrder(token: String) {
-    this.order.description = `yoco-${token}`
-    this.order.paymentType = Order.PaymentTypeEnum.YOCO
+  finishOrder() {
     this.orderService.finishOrder(this.order)
     .subscribe(order => {
       this.order = order

@@ -26,12 +26,12 @@
 }
 
 .bg-dark {
-    background-color: #10A59F !important;
+    background-color: var(--btn-bg-color) !important;
     color: white !important;
 }
 
 .button-dark {
-    background-color: #10A59F !important;
+    background-color: var(--btn-bg-color) !important;
     color: white !important;
 }
 
@@ -141,7 +141,7 @@ body {
     --bkg-color: #F8F7F7;
     --bkg-card-color: white;
     --btn-txt-color: #707070;
-    --btn-bg-color: rgb(11, 88, 160);
+    --btn-bg-color: rgb(20, 211, 195);
     --bkg-logo: url('/assets/images/izinga-logo.png')
   }
   body.dark-theme {
