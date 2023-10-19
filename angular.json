@@ -120,7 +120,6 @@
       }
     }
   },
-  "defaultProject": "izinga-pay",
   "cli": {
     "analytics": "ab7fcb37-5b08-4763-900f-d3e0c3ba2b30"
   }
