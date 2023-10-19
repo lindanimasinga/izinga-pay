@@ -66,7 +66,7 @@ export class YocoComponent implements OnInit {
       } else {
         const token = result;
         console.log(`token is ${token.id}`)
-        this.order.description = `yoco-${token}`
+        this.order.description = `yoco-${token.id}`
         this.order.paymentType = Order.PaymentTypeEnum.YOCO
         this.finishOrder()
       }
