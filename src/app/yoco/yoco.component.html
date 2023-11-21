@@ -1,20 +1,4 @@
 <div *ngIf="!orderSuccessful">
-<div class="card p-3">
-    <form id="payment-form" method="POST">  
-        <div class="one-liner">
-        <div id="card-frame">
-            <!-- Yoco Inline form will be added here -->
-        </div>
-        </div>
-        <p class="success-payment-message"></p>
-    </form>
-    <div class="d-flex justify-content-end">
-        <span class="logo pt-1">powered by</span>
-        <img class="logo align-middle" src="../../assets/images/yoco-logo.webp">
-        <img class="logo align-middle p-1" src="../../assets/images/visa_logo.png">
-        <img class="logo align-middle" src="../../assets/images/mastercard.png">
-    </div>
-</div>
 
 <ul class="list-group mt-3 text-muted">
     <li *ngIf="order.minimumDepositAllowedPerc == 1" class="list-group-item d-flex justify-content-between">
@@ -32,11 +16,11 @@
     <label class="form-check-label" for="flexCheckDefault" >
       Pay with card on delivery
     </label>
-  </div>
+</div>
 
 <div *ngIf="!isBusy" class="row mt-3 mb-5">
     <div class="col-md-6">
-        <button *ngIf="!payOndeliery" id="pay-button" (click)="startYocoPayment($event)" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
+        <button *ngIf="!payOndeliery" id="pay-button" (click)="startYocoPayment()" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
             Pay Now
         </button>
         <button *ngIf="payOndeliery" id="pay-button" (click)="startCODPayment($event)" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">

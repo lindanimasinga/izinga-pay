@@ -3,6 +3,7 @@ import { Order } from '../model/models';
 import { StorageService } from '../service/storage-service.service';
 import { IzingaOrderManagementService } from '../service/izinga-order-management.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 declare var YocoSDK: any;
 
@@ -47,7 +48,7 @@ export class PayComponent {
       var transactionRef: string = queryParamMap['TransactionReference']
       var paymentType: string = queryParamMap['type']
       var orderId = transactionRef.replace("ord-", "")
-      this.callBackUrl = queryParamMap['callback']
+      this.callBackUrl = queryParamMap['callback'] != undefined ? queryParamMap['callback'] : environment.izingaStoreSite
       console.log(`transaction id is ${transactionId}`)
       console.log(`status id is ${status}`)
       console.log(`transactionRef id is ${transactionRef}`)

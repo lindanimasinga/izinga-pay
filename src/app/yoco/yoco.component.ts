@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Order } from '../model/order';
+import { YocoPaymentInitiate } from '../model/yoco-payment-initiate';
 import { IzingaOrderManagementService } from '../service/izinga-order-management.service';
 
 declare var YocoSDK: any;
@@ -10,7 +11,7 @@ declare var YocoSDK: any;
   templateUrl: './yoco.component.html',
   styleUrls: ['./yoco.component.css']
 })
-export class YocoComponent implements OnInit {
+export class YocoComponent {
 
   inline;
   sdk
@@ -28,54 +29,23 @@ export class YocoComponent implements OnInit {
 
   constructor(private orderService: IzingaOrderManagementService) { }
 
-  ngOnInit(): void {
-    setTimeout(() => {
-      this.sdk = new YocoSDK({
-        publicKey: environment.yoco_public_key
-      });
-      // Create a new dropin form instance
-      this.inline = this.sdk.inline({
-        layout: 'basic',
-        amountInCents: this.order.totalAmount * 100,
-        currency: 'ZAR'
-      });
-      // this ID matches the id of the element we created earlier.
-      this.inline.mount('#card-frame');
-    }, 100)
-  }
-
   startCODPayment() {
     this.order.paymentType = Order.PaymentTypeEnum.SPEED_POINT
     this.finishOrder()
   }
 
-  startYocoPayment(envent: any) {
-    event.preventDefault()
-    // Disable the button to prevent multiple clicks while processing
-    //submitButton.disabled = true;
-    // This is the inline object we created earlier with the sdk
+  startYocoPayment() {
+    var yocoData: YocoPaymentInitiate = {
+       amount: this.order.totalAmount,
+       successUrl: `${this.callBackUrl}/order/${this.order.id}`,
+       metadata : {
+        orderId: this.order.id
+       }
+    }
     this.isBusy = true
-    this.inline.createToken().then( (result) => {
-      // Re-enable button now that request is complete
-      // (i.e. on success, on error and when auth is cancelled)
-     // submitButton.disabled = false;
-      if (result.error) {
-        const errorMessage = result.error.message;
-        errorMessage && alert("error occured: " + errorMessage);
-        this.isBusy = false
-      } else {
-        const token = result;
-        console.log(`token is ${token.id}`)
-        this.order.description = `yoco-${token.id}`
-        this.order.paymentType = Order.PaymentTypeEnum.YOCO
-        this.finishOrder()
-      }
-    }).catch(function (error) {
-      // Re-enable button now that request is complete
-     // submitButton.disabled = false;
-      this.isBusy = false
-      alert("error occured: " + error);
-    });
+    this.orderService.initialiseYocoPayment(yocoData).subscribe(resp => {
+      window.location.href = resp.redirectUrl
+    })
   }
 
   finishOrder() {
