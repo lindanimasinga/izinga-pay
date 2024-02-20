@@ -33,7 +33,8 @@ export interface Order {
     totalAmount?: number;
     freeDelivery?: boolean;
     minimumDepositAllowedPerc?: number;
-    depositAmount?: number
+    depositAmount?: number,
+    tip?: number
 }
 
 export namespace Order {

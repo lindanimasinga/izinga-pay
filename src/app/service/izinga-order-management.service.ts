@@ -21,7 +21,7 @@ export class IzingaOrderManagementService {
   get headers(){ 
     return {
     "Content-type": "application/json",
-    "app-version": "2.0.0",
+    "app-version": "3.0.0",
     };
   }
 

@@ -12,7 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import {PayfastComponent} from './payfast/payfast.component'
 import {OzowPaymentComponent} from './ozow-payment/ozow-payment.component';
 import { PayComponent } from './pay/pay.component';
-import { YocoComponent } from './yoco/yoco.component'
+import { YocoComponent } from './yoco/yoco.component';
+import { TipComponent } from './tip/tip/tip.component'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { YocoComponent } from './yoco/yoco.component'
     PayfastComponent,
     OzowPaymentComponent,
     PayComponent,
-    YocoComponent
+    YocoComponent,
+    TipComponent
   ],
   imports: [
     BrowserModule,
