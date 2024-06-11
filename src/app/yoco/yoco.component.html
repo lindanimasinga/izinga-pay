@@ -11,7 +11,7 @@
     </li>
 </ul>
 
-<div class="form-check mt-3">
+<div *ngIf="payOnDeliveryAllowed()" class="form-check mt-3">
     <input class="form-check-input" [checked]="payOndeliery" type="checkbox" (change)="payOndeliery = !payOndeliery" id="flexCheckDefault" >
     <label class="form-check-label" for="flexCheckDefault" >
       Pay with card on delivery

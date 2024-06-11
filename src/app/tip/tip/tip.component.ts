@@ -39,8 +39,8 @@ export class TipComponent {
     var stock = this.tippingStore.stockList[0]
     var order: Order = {
       shopId: this.tippingStore.id,
-      orderType: Order.OrderTypeEnum.ONLINE,
-      tip: 100,
+      orderType: Order.OrderTypeEnum.INSTORE,
+      tip: this.tipAmount,
       basket : {
         items : [
           {
@@ -55,7 +55,7 @@ export class TipComponent {
       customerId: "650f5078-10aa-4f98-b6e3-eac2fbd276ad",
       shippingData: {
         fromAddress: this.tippingStore.name,
-        toAddress: "Shop 38, Arbour Crossing Retail Centre, 2 Oppenheimer Rd, Durban, 4126",
+        toAddress: this.messanger.name,
         buildingType: ShippingData.BuildingTypeEnum.HOUSE,
         messengerId: this.messangerId,
         additionalInstructions:  "",

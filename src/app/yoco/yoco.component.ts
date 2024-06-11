@@ -78,4 +78,8 @@ export class YocoComponent {
     }
     return message
   }
+
+  payOnDeliveryAllowed() {
+    return this.order.paymentTypesAllowed != null && this.order.paymentTypesAllowed.filter(item => item == Order.PaymentTypeEnum.SPEED_POINT).length > 0
+  }
 }

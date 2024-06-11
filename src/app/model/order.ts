@@ -25,6 +25,7 @@ export interface Order {
     modifiedDate?: Date;
     orderType?: Order.OrderTypeEnum;
     paymentType?: Order.PaymentTypeEnum;
+    paymentTypesAllowed?: Array<Order.PaymentTypeEnum>;
     serviceFee?: number;
     shippingData: ShippingData;
     shopId: string;
