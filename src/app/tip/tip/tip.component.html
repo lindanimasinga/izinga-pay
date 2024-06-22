@@ -1,6 +1,6 @@
-<div id="tip-section mt-5">
-    <div class="mt-5 mb-5 d-flex justify-content-center">
-        <img src="../assets/images/izinga-logo.png" height="60px"> Tip Jar
+<div id="tip-section">
+    <div class="container mt-3 mb-5 d-flex justify-content-start">
+        <div class="logo-image" height="60px"></div>
     </div>
 
     <div *ngIf="messanger" class="col-md-4 order-md-2 mb-5">
@@ -8,19 +8,19 @@
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <div class="my-0 h5">Name</div>
-                    <div class="text-muted text-capitalize">{{messanger.name}}</div>
+                    <div class="text-capitalize">{{messanger.name}}</div>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <div class="my-0 h5">Occupation</div>
-                    <div class="text-muted text-capitalize">{{messanger.description}}</div>
+                    <div class="text-capitalize">{{messanger.description}}</div>
                 </div>
             </li>
             <li class="list-group-item d-flex justify-content-between lh-condensed">
                 <div>
                     <div class="my-0 h5">Tip Amount</div>
-                    <small class="text-muted">Enter the amount you would like to tip:</small>
+                    <small class="">Enter the amount you would like to tip:</small>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">ZAR</span>
@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<div class="container" *ngIf="tipAmount> 10 && tipAmount <= 3000">
+<div class="container" *ngIf="tipAmount>= 10 && tipAmount <= 3000">
     <button id="pay-button" (click)="startYocoPayment()" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
         Continue
     </button>

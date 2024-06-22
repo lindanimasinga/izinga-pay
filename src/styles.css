@@ -8,8 +8,17 @@
     src: url("/assets/fonts/Catamaran-Medium.ttf") format("opentype");
 }
 
+.logo-image {
+    background-image: var(--bkg-logo);
+    height: 60px;
+    width: 140px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 input {
-    width: 264px !important;
+    width: 200px !important;
 }
 
 .page-header {
@@ -17,7 +26,7 @@ input {
 }
 
 .list-group-item {
-    background-color: var(--bkg-form-color);
+    background-color: var(--bkg-card-color);
     color: var(--text-color);
     padding: 1rem 1.25rem;
     border: 0.75px solid rgba(0, 0, 0, .125);
@@ -135,7 +144,7 @@ a:active {
 }
 
 main {
-    min-height: calc(100vh - 261px) !important;
+    min-height: calc(100vh - 228px) !important;
 }
 
 body {
@@ -146,15 +155,16 @@ body {
 }
 
 body {
-    --text-color: #707070;
-    --bkg-color: #F8F7F7;
-    --footer-bkg-color: #707070;
-    --footer-text-color: #eee;
-    --bkg-card-color: white;
+    --text-color: #eee;
+    --bkg-color: #e0952d;
+    --footer-bkg-color: #be833d;
+    --footer-text-color: white;
+    --bkg-card-color: #ffffff30;
     --btn-txt-color: #707070;
     --btn-bg-color: #10A59F;
+    --btn-bg-selected-color: #10A59F;
     --btn-pill-color: rgb(11, 88, 160);
-    --bkg-logo: url('/assets/images/izinga-logo.png')
+    --bkg-logo: url('/assets/images/izinga-logo-white.png')
   }
 
 body.dark-theme {

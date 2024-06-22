@@ -1,6 +1,6 @@
-<div class="mt-3 d-flex justify-content-center">
-    <img src="../assets/images/izinga-logo.png" height="60px">
-  </div>
+<div class="container mt-3 mb-5 d-flex justify-content-start">
+    <div class="logo-image" height="60px"></div>
+</div>
   <div *ngIf="order && shopName" class="container">
   
     <div class="row" >
@@ -19,24 +19,24 @@
                 <li *ngFor="let orderItem of order.basket.items"
                     class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <h6 class="my-0 text-muted">{{orderItem.name}}</h6>
-                        <small class="text-muted">{{orderItem.description}}</small>
+                        <h6 class="my-0 ">{{orderItem.name}}</h6>
+                        <small class="">{{orderItem.description}}</small>
                     </div>
-                    <span class="text-muted">{{orderItem.price | currency:'R'}}</span>
+                    <span class="">{{orderItem.price | currency:'R'}}</span>
                 </li>
                 <li class="list-group-item d-flex justify-content-between lh-condensed">
                     <div>
-                        <div class="my-0 text-muted">Processing Fees</div>
-                        <small class="text-muted">Shipping to {{order.shippingData.toAddress}}</small>
+                        <div class="my-0 ">Processing Fees</div>
+                        <small class="">Shipping to {{order.shippingData.toAddress}}</small>
                     </div>
-                    <span class="text-muted" *ngIf="order.freeDelivery">{{order.serviceFee | currency:'R'}}</span>
-                    <span class="text-muted"*ngIf="!order.freeDelivery">{{order.shippingData.fee + order.serviceFee | currency:'R'}}</span>
+                    <span class="" *ngIf="order.freeDelivery">{{order.serviceFee | currency:'R'}}</span>
+                    <span class=""*ngIf="!order.freeDelivery">{{order.shippingData.fee + order.serviceFee | currency:'R'}}</span>
                 </li>
-                <li class="list-group-item d-flex justify-content-between text-muted">
+                <li class="list-group-item d-flex justify-content-between ">
                     <span>Total (ZAR)</span>
                     <strong>{{order.totalAmount | currency:'R'}}</strong>
                 </li>
-                <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between text-muted">
+                <li *ngIf="order.minimumDepositAllowedPerc < 1" class="list-group-item d-flex justify-content-between ">
                     <span>Deposit to pay ({{order.minimumDepositAllowedPerc * 100}}% + Shipping)</span>
                     <strong>{{order.depositAmount | currency:'R'}}</strong>
                 </li>
