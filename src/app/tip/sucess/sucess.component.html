@@ -1,0 +1,52 @@
+<div id="tip-section">
+    <div class="container mt-3 mb-3 d-flex justify-content-start">
+        <div class="logo-image" height="60px"></div>
+    </div>
+
+    <div class="col-md-12">
+            <div class="d-flex justify-content-center">
+                <lottie-player src="https://lottie.host/3b2b08ed-2c8f-4296-9a7e-fb39d0e48aa2/9MD0ZD3xpt.json"  background="transparent"  speed="1"  style="width: 200px; height: 250px;"  loop autoplay></lottie-player>
+            </div>
+            <div class="d-flex justify-content-center h2">
+                Woooh Thank you!!
+            </div>
+    </div>
+    <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+            <lottie-player src="https://lottie.host/c1cd88dc-d6ba-48b9-8cea-d57f64f7ee44/G2WgaqBQsR.json"  background="transparent"  speed="1"  style="width: 200px; height: 150px;" autoplay></lottie-player>
+        </div>
+    </div>
+
+    <div class="container">
+        <div *ngIf="order != null" class="mb-3 d-flex justify-content-sm-center justify-content-md-start">
+            <div class="page-header h5">Ref:<small>{{order.id}}</small></div> 
+        </div>
+        <div class="row mt-3">
+            <div *ngIf="order != null" class="col-md-6 order-md-2 mb-1">
+                <ul class="list-group mb-1">
+                    <li *ngFor="let orderItem of order.basket.items"
+                        class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <h6 class="my-0">{{orderItem.quantity}} x {{orderItem.name}}</h6>
+                            <div *ngFor="let option of orderItem.options">
+                                <small class="">{{option.name}} : {{option.selected}}</small>
+                            </div>
+                        </div>
+                        <span class="">{{orderItem.price * orderItem.quantity | currency:'R'}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-condensed">
+                        <div>
+                            <div class="my-0">Processing</div>
+                        </div>
+                        <span class="" *ngIf="order.freeDelivery">{{order.serviceFee | currency:'R'}}</span>
+                        <span class=""*ngIf="!order.freeDelivery">{{order.shippingData.fee + order.serviceFee | currency:'R'}}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (ZAR)</span>
+                        <strong>{{order.totalAmount | currency:'R'}}</strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

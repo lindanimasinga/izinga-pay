@@ -17,7 +17,8 @@ export class TipComponent {
 
   messanger: UserProfile
   messangerId: string
-  tipAmount: number
+  cardId: string
+  tipAmount: number = 0
   tippingStore: StoreProfile
 
   constructor(private izingaService: IzingaOrderManagementService,  private route: ActivatedRoute, private router: Router) {}
@@ -26,8 +27,20 @@ export class TipComponent {
     console.log(`Loading messanger details...`)
     this.route.queryParams.subscribe(queryParamMap => {
       this.messangerId = queryParamMap['messengerId']
-      this.izingaService.getCustomerById(this.messangerId)
-        .subscribe(mssg => this.messanger = mssg)
+      this.cardId = queryParamMap['linkCode']
+
+      if(this.messangerId) {
+        this.getCustomer(this.messangerId)
+      } else if (this.cardId) {
+        this.izingaService.getLinkedUserToCard(this.cardId)
+        .subscribe(mssg => {
+            if(mssg) {
+              this.getCustomer(mssg.userId)
+            } else window.location.href = 'https://onboard.izinga.co.za'
+        })
+      } else {
+        console.error("No user Id or cardId provided")
+      }
     })
 
     this.izingaService.getStoreById(environment.tipStoreId)
@@ -35,6 +48,11 @@ export class TipComponent {
   }
   
   startYocoPayment() {
+    
+    if(this.tipAmount < 10 || this.tipAmount > 3000) {
+      return
+    }
+
     console.log(`loading payment screen.. ${this.tipAmount}`)
     var stock = this.tippingStore.stockList[0]
     var order: Order = {
@@ -65,7 +83,13 @@ export class TipComponent {
     this.izingaService.startOrder(order)
       .subscribe(order => {
         console.log("Tipping Order initiated... Redirecting to payment screen")
-        this.router.navigate([''], { queryParams: {"TransactionReference": order.id, "status": "init", "type": "yoco"} })
+        this.router.navigate([''], { queryParams: {"TransactionReference": order.id, "status": "init", "type": "yoco", "callback": "https://pay.izinga.co.za"} })
       })
   }
+
+  getCustomer(messangerId: string) {
+    this.izingaService.getCustomerById(messangerId)
+          .subscribe(mssg => this.messanger = mssg)
+  }
 }
+

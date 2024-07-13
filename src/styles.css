@@ -8,6 +8,12 @@
     src: url("/assets/fonts/Catamaran-Medium.ttf") format("opentype");
 }
 
+.form-control, .input-group-text, .input-group-prepend, .input-group, .input-group:disabled {
+    background-color: var(--bkg-card-color);
+    color: var(--text-color);
+    height: 100%;
+}
+
 .logo-image {
     background-image: var(--bkg-logo);
     height: 60px;

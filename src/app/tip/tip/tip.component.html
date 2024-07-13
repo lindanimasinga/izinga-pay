@@ -1,45 +1,48 @@
-<div id="tip-section">
-    <div class="container mt-3 mb-5 d-flex justify-content-start">
+<div class="container" id="tip-section">
+    <div class="mt-3 mb-5 d-flex justify-content-start">
         <div class="logo-image" height="60px"></div>
     </div>
 
     <div *ngIf="messanger" class="col-md-4 order-md-2 mb-5">
-        <ul class="list-group mb-3">
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <div class="my-0 h5">Name</div>
-                    <div class="text-capitalize">{{messanger.name}}</div>
-                </div>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <div class="my-0 h5">Occupation</div>
-                    <div class="text-capitalize">{{messanger.description}}</div>
-                </div>
-            </li>
-            <li class="list-group-item d-flex justify-content-between lh-condensed">
-                <div>
-                    <div class="my-0 h5">Tip Amount</div>
-                    <small class="">Enter the amount you would like to tip:</small>
-                    <div class="input-group mb-3">
+        <div class="mb-3">
+            <div class="row mb-1">
+                    <div class="my-0 mb-1">Name</div>
+                    <div class="text-capitalize form-control">{{messanger.name}}</div>
+            </div>
+            <div class="row mb-5">
+                    <div class="my-0 mb-1">Occupation</div>
+                    <div class="text-capitalize form-control">{{messanger.description}}</div>
+            </div>
+            <div class="row mb-1">
+                <div class="my-0 mb-1">Enter Tip Amount</div>
+                <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">ZAR</span>
                         </div>
-                        <input aria-describedby="basic-addon1" type="number" [(ngModel)]="tipAmount" name="tipAmount" #tipAmountInput="ngModel" required min="10" max="3000">
-                    </div>
-                    <div *ngIf="tipAmountInput.invalid && (tipAmountInput.dirty || tipAmountInput.touched)"
-                        class="text-danger">
-                        <div *ngIf="tipAmountInput.errors.required">Tip amount is required.</div>
-                        <div *ngIf="tipAmountInput.errors.min || tipAmountInput.errors.max">Tip amount should be between R10 and R3000.</div>
-                    </div>
+                        <input class="form-control" claria-describedby="basic-addon1" type="number" [(ngModel)]="tipAmount" name="tipAmount" #tipAmountInput="ngModel" required min="10" max="3000">
                 </div>
-            </li>
-        </ul>
+            </div>   
+            <div class="row mb-1">
+                <div class="my-0 mb-1">Processing Fee</div>
+                <div class="form-control">R{{tipAmount * 0.065 | number : '1.2-2'}}</div>
+            </div>
+            <div class="row mb-1">
+                <div class="my-0 mb-1">Total</div>
+                <div class="form-control">R{{tipAmount * 1.065 | number : '1.2-2'}}</div>
+            </div>
+            <div class="row">
+                    <div *ngIf="tipAmountInput.invalid && (tipAmountInput.dirty || tipAmountInput.touched)"
+                            class="text-danger">
+                            <div *ngIf="tipAmountInput.errors.required">Tip amount is required.</div>
+                            <div *ngIf="tipAmountInput.errors.min || tipAmountInput.errors.max">Tip amount should be between R10 and R3000.</div>
+                    </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div class="container" *ngIf="tipAmount>= 10 && tipAmount <= 3000">
+<div class="container">
     <button id="pay-button" (click)="startYocoPayment()" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
-        Continue
+        Continue (R{{tipAmount * 1.065 | number : '1.2-2'}})
     </button>
 </div>

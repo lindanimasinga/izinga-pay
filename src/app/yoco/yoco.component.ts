@@ -55,7 +55,7 @@ export class YocoComponent {
       this.orderSuccessful = true
 
       if(this.callBackUrl) {
-        window.location.href = `${this.callBackUrl}/order/${order.id}`
+        window.location.href = `${this.callBackUrl}/tip-sucess?order=/${order.id}`
       } else window.close()
 
       this.isBusy = false

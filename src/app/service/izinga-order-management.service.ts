@@ -6,6 +6,7 @@ import { StorageService } from './storage-service.service';
 import { environment } from 'src/environments/environment';
 import { catchError } from 'rxjs/operators';
 import { YocoPaymentInitiate, YocoPaymentInitiateResponse } from '../model/yoco-payment-initiate';
+import { UserCardLink } from '../model/user-card-link';
 
 @Injectable({
   providedIn: 'root'
@@ -99,6 +100,16 @@ export class IzingaOrderManagementService {
   getCustomerByPhoneNumber(mobileNumber: string): Observable<UserProfile> {
     return this.http
         .get<UserProfile>(`${environment.izingaUrl}/user/${mobileNumber}`, {headers: this.headers})
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.storage.errorMessage = error.error.message
+            return throwError(error)
+          }))
+  }
+
+  getLinkedUserToCard(cardId: string): Observable<UserCardLink>  {
+    return this.http
+        .get<UserProfile>(`${environment.izingaUrl}/linkCode/${cardId}`, {headers: this.headers})
         .pipe(
           catchError((error: HttpErrorResponse) => {
             this.storage.errorMessage = error.error.message
