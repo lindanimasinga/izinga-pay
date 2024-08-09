@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { Order } from '../model/order';
 import { YocoPaymentInitiate } from '../model/yoco-payment-initiate';
 import { IzingaOrderManagementService } from '../service/izinga-order-management.service';
+import { StoreProfile } from '../model/storeProfile';
 
 declare var YocoSDK: any;
 
@@ -27,7 +28,18 @@ export class YocoComponent {
 
   payOndeliery = false
 
-  constructor(private orderService: IzingaOrderManagementService) { }
+  promoCode: string = ""
+  _promoCodeApplied: boolean = false
+
+  isTip = true;
+
+
+  constructor(private orderService: IzingaOrderManagementService) { 
+  }
+
+  ngOnInit() {
+    this.loadShop()
+  }
 
   startCODPayment() {
     this.order.paymentType = Order.PaymentTypeEnum.SPEED_POINT
@@ -81,5 +93,34 @@ export class YocoComponent {
 
   payOnDeliveryAllowed() {
     return this.order.paymentTypesAllowed != null && this.order.paymentTypesAllowed.filter(item => item == Order.PaymentTypeEnum.SPEED_POINT).length > 0
+  }
+
+  hasPromoCode() {
+    return this.promoCode.trim().length > 0;
+  }
+
+  promoCodeApplied() {
+    return this._promoCodeApplied;
+  }
+
+  applyPromo() {
+    this.orderService.applyPromo(this.order, this.promoCode)
+    .subscribe(order => {
+        this.order = order
+        this._promoCodeApplied = true
+        window.location.reload();
+      },
+      (error) => {
+        this._promoCodeApplied = true
+      }
+    )
+  }
+
+  loadShop() {
+    return this.orderService.getStoreById(this.order.shopId)
+    .subscribe(shop => {
+        this.isTip = shop.storeType == StoreProfile.StoreTypeEnum.TIPS
+        console.log(`this is ${this.isTip}`)
+    })
   }
 }

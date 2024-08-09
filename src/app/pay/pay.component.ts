@@ -27,6 +27,7 @@ export class PayComponent {
   shopName: string
   callBackUrl: string
   buttonMessage: string
+  promoCode: String
 
   inline;
   sdk

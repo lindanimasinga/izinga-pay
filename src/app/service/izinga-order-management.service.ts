@@ -47,6 +47,16 @@ export class IzingaOrderManagementService {
           }))
   }
 
+  applyPromo(order: Order, promoCode: string): Observable<Order> {
+    return this.http
+        .patch<Order>(`${environment.izingaUrl}/order/${order.id}/promocode/${promoCode}`, {headers: this.headers})
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.storage.errorMessage = error.error.message
+            return throwError(error)
+          }))
+  }
+
   getAllOrdersByMobileNumber(mobileNumber: string) : Observable<Array<Order>> {
     return this.http
         .get<Array<Order>>(`${environment.izingaUrl}/order?phone=${mobileNumber}`, {headers: this.headers})

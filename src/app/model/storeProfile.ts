@@ -55,11 +55,12 @@ export namespace StoreProfile {
         STORE: 'STORE' as RoleEnum,
         MESSENGER: 'MESSENGER' as RoleEnum
     };
-    export type StoreTypeEnum = 'FOOD' | 'CLOTHING' | 'SALON' | 'CAR_WASH';
+    export type StoreTypeEnum = 'FOOD' | 'CLOTHING' | 'SALON' | 'CAR_WASH'| 'TIPS';
     export const StoreTypeEnum = {
         FOOD: 'FOOD' as StoreTypeEnum,
         CLOTHING: 'CLOTHING' as StoreTypeEnum,
         SALON: 'SALON' as StoreTypeEnum,
-        CARWASH: 'CAR_WASH' as StoreTypeEnum
+        CARWASH: 'CAR_WASH' as StoreTypeEnum,
+        TIPS: 'TIPS' as StoreTypeEnum
     };
 }

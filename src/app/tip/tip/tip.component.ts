@@ -35,6 +35,7 @@ export class TipComponent {
         this.izingaService.getLinkedUserToCard(this.cardId)
         .subscribe(mssg => {
             if(mssg) {
+              this.messangerId = mssg.userId 
               this.getCustomer(mssg.userId)
             } else window.location.href = 'https://onboard.izinga.co.za'
         })
