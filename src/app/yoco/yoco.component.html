@@ -27,7 +27,7 @@
     </label>
 </div>
 
-<div *ngIf="hasPromoCode() && !promoCodeApplied() && !isTip else continueToPay">
+<div *ngIf="hasPromoCode() && !promoCodeApplied() && !isTip else continueToPay" class="row mt-3">
     <div class="col-md-6 mb-5">
         <button id="apply-promo" (click)="applyPromo()" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
             Apply Promo Code

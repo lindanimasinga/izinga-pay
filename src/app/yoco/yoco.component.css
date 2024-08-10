@@ -29,3 +29,12 @@
     bottom: 75px;
     color: var(--text-color);
 }
+
+.form-control {
+    border: 1px #ced4da;
+    padding: 10px;
+}
+
+.input-group-text {
+    border: 1px solid #ced4da;
+}

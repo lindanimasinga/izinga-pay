@@ -10,7 +10,7 @@ export var environment = {
   storeType: StoreProfile.StoreTypeEnum.CLOTHING,
   messengerId: "ffd4c856-644f-4453-a5ed-84689801a747",
   tipStoreId: "adace792-5b97-4708-b1d3-ff8448854b30",
-  izingaUrl: "http://api.izinga.co.za",
+  izingaUrl: "http://localhost",
   izingaStoreSite: "https://shop.izinga.co.za",
   izingaMasterpassUrl: "https://ellyw5af54.execute-api.af-south-1.amazonaws.com/prod/ukheshe-masterpass-code",
   ukhesheUrl: "https://ukheshe-sandbox.jini.rocks/ukheshe-conductor/rest/v1",

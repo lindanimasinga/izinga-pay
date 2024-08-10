@@ -111,7 +111,8 @@ export class YocoComponent {
         window.location.reload();
       },
       (error) => {
-        this._promoCodeApplied = true
+        var errorMessage = this.resolveError(error.error.message)
+        alert(errorMessage);
       }
     )
   }
