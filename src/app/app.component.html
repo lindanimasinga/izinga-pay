@@ -1,3 +1,10 @@
 <div>
   <router-outlet></router-outlet>
 </div>
+
+<div *ngIf="hasError" class="alert alert-danger error alert-dismissible fade show fixed-top" role="alert">
+  <strong>{{errorMessage}}</strong>
+  <button type="button" class="close" aria-label="Close" (click)="clearError()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>

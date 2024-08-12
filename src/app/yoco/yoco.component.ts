@@ -4,6 +4,7 @@ import { Order } from '../model/order';
 import { YocoPaymentInitiate } from '../model/yoco-payment-initiate';
 import { IzingaOrderManagementService } from '../service/izinga-order-management.service';
 import { StoreProfile } from '../model/storeProfile';
+import { StorageService } from '../service/storage-service.service';
 
 declare var YocoSDK: any;
 
@@ -34,7 +35,7 @@ export class YocoComponent {
   isTip = true;
 
 
-  constructor(private orderService: IzingaOrderManagementService) { 
+  constructor(private orderService: IzingaOrderManagementService, private storageService: StorageService) { 
   }
 
   ngOnInit() {
@@ -111,8 +112,7 @@ export class YocoComponent {
         window.location.reload();
       },
       (error) => {
-        var errorMessage = this.resolveError(error.error.message)
-        alert(errorMessage);
+        this.storageService.errorMessage = this.resolveError(error.error.message)
       }
     )
   }

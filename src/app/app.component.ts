@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { StorageService } from './service/storage-service.service';
 
 const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 document.body.classList.toggle('dark-theme', prefersDarkScheme.matches);
@@ -11,7 +12,20 @@ document.body.classList.toggle('dark-theme', prefersDarkScheme.matches);
 export class AppComponent {
   title = 'izinga-pay';
 
-  constructor() {
+  constructor(private storageService: StorageService) {
+    this.clearError()
+  }
+
+  get hasError(): boolean {
+    return this.storageService.errorMessage != null 
+  }
+
+  clearError() {
+    this.storageService.errorMessage = null;
+  }
+
+  get errorMessage() {
+    return this.storageService.errorMessage
   }
 
 }
