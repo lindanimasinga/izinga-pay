@@ -84,7 +84,7 @@ export class TipComponent {
     this.izingaService.startOrder(order)
       .subscribe(order => {
         console.log("Tipping Order initiated... Redirecting to payment screen")
-        this.router.navigate([''], { queryParams: {"TransactionReference": order.id, "status": "init", "type": "yoco", "callback": "https://pay.izinga.co.za"} })
+        this.router.navigate([''], { queryParams: {"TransactionReference": order.id, "status": "init", "type": "yoco", "callback": window.location.origin} })
       })
   }
 

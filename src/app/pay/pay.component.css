@@ -2,3 +2,7 @@
     color: var(--bkg-color);
     background-color: #D47058;
 }
+
+.small-detail {
+    font-size: 13px;
+}

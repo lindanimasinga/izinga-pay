@@ -23,6 +23,7 @@ export interface ShippingData {
     toAddress: string;
     type: ShippingData.TypeEnum;
     unitNumber?: string;
+    distance?: number
 }
 export namespace ShippingData {
     export type BuildingTypeEnum = 'HOUSE' | 'OFFICE' | 'APARTMENT';
