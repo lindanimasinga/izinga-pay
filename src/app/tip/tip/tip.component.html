@@ -3,23 +3,46 @@
         <div class="logo-image" height="60px"></div>
     </div>
 
+    <!-- Ask for mobile number if messanger is missing -->
+    <div *ngIf="!messanger" class="col-md-4 order-md-2 mb-5">
+        <div class="mb-3">
+            <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Phone</span>
+                    </div>
+                    <input class="form-control" aria-describedby="basic-addon1" type="tel" [(ngModel)]="mobileNumber" name="mobileNumber" #mobileNumberInput="ngModel" required pattern="^(\+27|0)[6-8][0-9]{8}$" placeholder="Enter mobile number">
+                    <div *ngIf="mobileNumberInput.invalid && (mobileNumberInput.dirty || mobileNumberInput.touched)" class="text-danger">
+                        <div *ngIf="mobileNumberInput.errors.required">Mobile number is required.</div>
+                        <div *ngIf="mobileNumberInput.errors.pattern">Invalid mobile number format.</div>
+                    </div>
+            </div>
+            <div class="row">
+                <button class="btn btn-lg btn-block btn-primary bg-dark shadow-sm" [disabled]="mobileNumberInput.invalid" (click)="lookupMessengerByMobile()">Find</button>
+            </div>
+            <div class="row" *ngIf="lookupError">
+                <div class="text-danger mt-2">{{lookupError}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Show tip form if messanger is found -->
     <div *ngIf="messanger" class="col-md-4 order-md-2 mb-5">
         <div class="mb-3">
             <div class="row mb-1">
-                    <div class="my-0 mb-1">Name</div>
-                    <div class="text-capitalize form-control">{{messanger.name}}</div>
+                <div class="my-0 mb-1">Name</div>
+                <div class="text-capitalize form-control">{{messanger.name}}</div>
             </div>
             <div class="row mb-5">
-                    <div class="my-0 mb-1">Occupation</div>
-                    <div class="text-capitalize form-control">{{messanger.description}}</div>
+                <div class="my-0 mb-1">Occupation</div>
+                <div class="text-capitalize form-control">{{messanger.description}}</div>
             </div>
             <div class="row mb-1">
                 <div class="my-0 mb-1">Enter Tip Amount</div>
                 <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">ZAR</span>
-                        </div>
-                        <input class="form-control" claria-describedby="basic-addon1" type="number" [(ngModel)]="tipAmount" name="tipAmount" #tipAmountInput="ngModel" required min="10" max="3000">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">ZAR</span>
+                    </div>
+                    <input class="form-control" aria-describedby="basic-addon1" type="number" [(ngModel)]="tipAmount" name="tipAmount" #tipAmountInput="ngModel" required min="10" max="3000">
                 </div>
             </div>   
             <div class="row mb-1">
@@ -31,17 +54,18 @@
                 <div class="form-control">R{{tipAmount * 1.065 | number : '1.2-2'}}</div>
             </div>
             <div class="row">
-                    <div *ngIf="tipAmountInput.invalid && (tipAmountInput.dirty || tipAmountInput.touched)"
-                            class="text-danger">
-                            <div *ngIf="tipAmountInput.errors.required">Tip amount is required.</div>
-                            <div *ngIf="tipAmountInput.errors.min || tipAmountInput.errors.max">Tip amount should be between R10 and R3000.</div>
-                    </div>
+                <div *ngIf="tipAmountInput.invalid && (tipAmountInput.dirty || tipAmountInput.touched)"
+                        class="text-danger">
+                        <div *ngIf="tipAmountInput.errors.required">Tip amount is required.</div>
+                        <div *ngIf="tipAmountInput.errors.min || tipAmountInput.errors.max">Tip amount should be between R10 and R3000.</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
+<!-- Continue button, styled the same, only shows if messanger is found -->
+<div class="container" *ngIf="messanger">
     <button id="pay-button" (click)="startYocoPayment()" class="btn btn-lg btn-block btn-primary bg-dark shadow-sm">
         Continue (R{{tipAmount * 1.065 | number : '1.2-2'}})
     </button>

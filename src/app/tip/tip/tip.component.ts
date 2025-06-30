@@ -20,6 +20,7 @@ export class TipComponent {
   cardId: string
   tipAmount: number = 0
   tippingStore: StoreProfile
+  mobileNumber: string;
 
   constructor(private izingaService: IzingaOrderManagementService,  private route: ActivatedRoute, private router: Router) {}
 
@@ -91,6 +92,21 @@ export class TipComponent {
   getCustomer(messangerId: string) {
     this.izingaService.getCustomerById(messangerId)
           .subscribe(mssg => this.messanger = mssg)
+  }
+
+  lookupMessengerByMobile() {
+    if(!this.mobileNumber) {
+      console.error("No mobile number provided")
+      return
+    }
+    this.izingaService.getCustomerByPhoneNumber(this.mobileNumber)
+      .subscribe(mssg => {
+        if(mssg) {
+          this.messanger = mssg
+        } else {
+          console.error("No messenger found with the provided mobile number")
+        }
+      })
   }
 }
 
