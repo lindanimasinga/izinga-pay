@@ -6,10 +6,8 @@
     <!-- Ask for mobile number if messanger is missing -->
     <div *ngIf="!messanger" class="col-md-4 order-md-2 mb-5">
         <div class="mb-3">
+            <div class="my-0 mb-1">Enter mobile number to tip:</div>
             <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Phone</span>
-                    </div>
                     <input class="form-control" aria-describedby="basic-addon1" type="tel" [(ngModel)]="mobileNumber" name="mobileNumber" #mobileNumberInput="ngModel" required pattern="^(\+27|0)[6-8][0-9]{8}$" placeholder="Enter mobile number">
                     <div *ngIf="mobileNumberInput.invalid && (mobileNumberInput.dirty || mobileNumberInput.touched)" class="text-danger">
                         <div *ngIf="mobileNumberInput.errors.required">Mobile number is required.</div>
