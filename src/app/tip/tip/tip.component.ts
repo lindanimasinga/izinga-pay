@@ -77,7 +77,7 @@ export class TipComponent {
         fromAddress: this.tippingStore.name,
         toAddress: this.messanger.name,
         buildingType: ShippingData.BuildingTypeEnum.HOUSE,
-        messengerId: this.messangerId,
+        messengerId: this.messanger.id,
         additionalInstructions:  "",
         type: ShippingData.TypeEnum.DELIVERY
       }
