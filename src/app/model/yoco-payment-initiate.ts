@@ -16,11 +16,13 @@ export class YocoPaymentInitiate {
     currency?: string = "ZAR"
     successUrl?: string
     metadata?: YocoPaymentMetadata
+    lineItems?: YocoLineItem[]
+    processingMode?: string
 }
 
 export class YocoPaymentMetadata {
     checkoutId?: string
-    orderId?: string
+    externalId?: string
 }
 
 export class YocoPaymentInitiateResponse { 
@@ -28,3 +30,16 @@ export class YocoPaymentInitiateResponse {
     id?: string
     status?: string
 }
+
+
+export interface YocoLineItem {
+    displayName: string;
+    quantity: number;
+    pricingDetails: YocoPricingDetails;
+    description?: string | null;
+}
+
+export interface YocoPricingDetails {
+    price: string;
+}
+

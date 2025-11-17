@@ -52,11 +52,14 @@ export class YocoComponent {
        amount: this.order.totalAmount,
        successUrl: `${this.callBackUrl}/order/${this.order.id}`,
        metadata : {
-        orderId: this.order.id
-       }
+        externalId: this.order.id
+       },
+       processingMode: "live"
     }
     this.isBusy = true
+    console.log(`yoco data is ${JSON.stringify(yocoData)}`)
     this.orderService.initialiseYocoPayment(yocoData).subscribe(resp => {
+      console.log(`yoco response is ${JSON.stringify(resp)}`)
       window.location.href = resp.redirectUrl
     })
   }
@@ -125,3 +128,7 @@ export class YocoComponent {
     })
   }
 }
+function YocoLineItem(name: string, quantity: number, arg2: { price: number; }, arg3: string): any {
+  throw new Error('Function not implemented.');
+}
+
