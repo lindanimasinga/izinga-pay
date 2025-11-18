@@ -47,6 +47,12 @@ export class PayComponent {
     this.route.queryParams.subscribe(queryParamMap => {
       var transactionId = queryParamMap['TransactionId']
       var transactionRef: string = queryParamMap['TransactionReference']
+
+      if(transactionRef == undefined) {
+        this.router.navigate(['tip'])
+        return
+      }
+
       var paymentType: string = queryParamMap['type']
       var orderId = transactionRef.replace("ord-", "")
       this.callBackUrl = queryParamMap['callback'] != undefined ? queryParamMap['callback'] : environment.izingaStoreSite
