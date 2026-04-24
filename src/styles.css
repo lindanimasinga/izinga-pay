@@ -171,16 +171,16 @@ body {
 }
 
 body {
-    --text-color: #eee;
-    --bkg-color: #e0952d;
-    --footer-bkg-color: #be833d;
+    --text-color: #515151;
+    --bkg-color: #eee;
+    --footer-bkg-color: #a17131;
     --footer-text-color: white;
-    --bkg-card-color: #ffffff30;
+    --bkg-card-color: white;
     --btn-txt-color: #707070;
-    --btn-bg-color: #e0952d;
-    --btn-bg-selected-color: #e0952d;
+    --btn-bg-color: #a17131;
+    --btn-bg-selected-color: #a17131;
     --btn-pill-color: rgb(11, 88, 160);
-    --bkg-logo: url('/assets/images/izinga-logo-white.png')
+    --bkg-logo: url('/assets/images/izinga-logo.png')
   }
 
 body.dark-theme {
@@ -190,7 +190,7 @@ body.dark-theme {
     --footer-bkg-color: #000000;
     --footer-text-color: #eee;
     --btn-txt-color: rgb(46, 43, 43);
-    --btn-bg-color: #e0952d;
+    --btn-bg-color: #a17131;
     --btn-pill-color: rgb(11, 88, 160);
     --bkg-logo: url('/assets/images/izinga-logo.png')
   }

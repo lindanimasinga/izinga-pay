@@ -3,7 +3,9 @@ h2 , h3 {
 }
 
 .welcome-logo {
-  width: 350px;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
 }
 
 .badge {
