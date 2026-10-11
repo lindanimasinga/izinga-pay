@@ -50,7 +50,7 @@ export class YocoComponent {
   startYocoPayment() {
     var yocoData: YocoPaymentInitiate = {
        amount: this.order.totalAmount,
-       successUrl: `${this.callBackUrl}/order/${this.order.id}`,
+       successUrl: `${window.location.origin}/order/${this.order.id}?ref=${encodeURIComponent(`${this.callBackUrl}/order/${this.order.id}`)}`,
        metadata : {
         externalId: this.order.id
        },
@@ -58,7 +58,8 @@ export class YocoComponent {
     }
     this.isBusy = true
     console.log(`yoco data is ${JSON.stringify(yocoData)}`)
-    this.orderService.initialiseYocoPayment(yocoData).subscribe(resp => {
+    this.orderService.initialiseYocoPayment(yocoData)
+    .subscribe(resp => {
       console.log(`yoco response is ${JSON.stringify(resp)}`)
       window.location.href = resp.redirectUrl
     })
