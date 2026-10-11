@@ -1,9 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as firebase from "firebase/app";
-// Add the Firebase services that you want to use
-import "firebase/auth";
-import "firebase/firestore";
+import { FirebaseApp, getApp, getApps, initializeApp } from 'firebase/app';
+import { Auth, ConfirmationResult, RecaptchaVerifier, getAuth, signInWithPhoneNumber } from 'firebase/auth';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -14,46 +12,49 @@ import { StorageService } from './storage-service.service';
 })
 export class FirebaseService {
 
-  recaptchaVerifier: any;
-  confirmResults: firebase.default.auth.ConfirmationResult;
+  private app: FirebaseApp;
+  private auth: Auth;
+  recaptchaVerifier: RecaptchaVerifier;
+  confirmResults: ConfirmationResult;
 
   constructor(private storage: StorageService) {
-    var firebaseConfig = {
-      apiKey: environment.firebase_apiKey,
-      authDomain: environment.authDomain,
-      databaseURL: environment.databaseURL,
-      projectId: environment.projectId,
-      messagingSenderId: environment.messagingSenderId,
-      appId: environment.appId,
-      measurementId: environment.measurementId
-    };
-      // Initialize Firebase
-      firebase.default.initializeApp(firebaseConfig);
+    // Guard against duplicate initialisation (e.g. during hot-module reload)
+    this.app = getApps().length === 0
+      ? initializeApp({
+          apiKey: environment.firebase_apiKey,
+          authDomain: environment.authDomain,
+          databaseURL: environment.databaseURL,
+          projectId: environment.projectId,
+          messagingSenderId: environment.messagingSenderId,
+          appId: environment.appId,
+          measurementId: environment.measurementId
+        })
+      : getApp();
+    this.auth = getAuth(this.app);
   }
 
   createCapture() {
-    this.recaptchaVerifier = new firebase.default.auth.RecaptchaVerifier('recaptcha-container');
-    this.recaptchaVerifier.render()
+    this.recaptchaVerifier = new RecaptchaVerifier(this.auth, 'recaptcha-container', {});
+    this.recaptchaVerifier.render();
   }
 
-
-  requestVerification(phoneNumber: string): Observable<firebase.default.auth.ConfirmationResult> {
+  requestVerification(phoneNumber: string): Observable<ConfirmationResult> {
     const appVerifier = this.recaptchaVerifier;
-    var promise = firebase.default.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-    return from(promise)
-      .pipe(
-        map(resp => this.confirmResults = resp)
-      )
+    const promise = signInWithPhoneNumber(this.auth, phoneNumber, appVerifier);
+    return from(promise).pipe(
+      map(resp => {
+        this.confirmResults = resp;
+        return resp;
+      })
+    );
   }
 
   confirmCode(code: string) {
-    return from(this.confirmResults
-      .confirm(code))
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          this.storage.errorMessage = error.message
-          return throwError(error)
-        })
-      )
+    return from(this.confirmResults.confirm(code)).pipe(
+      catchError((error: HttpErrorResponse) => {
+        this.storage.errorMessage = error.message;
+        return throwError(error);
+      })
+    );
   }
 }
