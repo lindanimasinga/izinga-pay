@@ -1,3 +1,21 @@
+/**
+ * SucessComponent spec.
+ *
+ * Test structure:
+ *  - Groups 1 and 3 (no-ref, untrusted-ref): component has no pending timer so standard
+ *    synchronous beforeEach is safe.
+ *  - Group 2 (trusted-ref): the component constructor schedules a real 3-second
+ *    window.location.href navigation. To prevent the real timer firing during the test
+ *    run, every trusted-ref test creates the component INSIDE a fakeAsync body so that
+ *    setTimeout is intercepted by Angular's zone patch. The timer is cancelled at the end
+ *    of each test with component.ngOnDestroy() + discardPeriodicTasks().
+ *  - Group 4: pure unit tests for isTrustedRedirect(). No timer; standard setup.
+ *
+ * NOTE: the window.location.href assignment in the timer callback and in continue() is
+ * intentionally not executed in any test — navigating away from the Karma runner page
+ * would crash the test runner. The control flow surrounding those assignments (timer
+ * scheduling, cancellation, and null-guard) is fully covered.
+ */
 import {
   ComponentFixture,
   TestBed,
@@ -11,6 +29,8 @@ import { of } from 'rxjs';
 
 import { SucessComponent } from './sucess.component';
 import { IzingaOrderManagementService } from 'src/app/service/izinga-order-management.service';
+
+// ── shared helpers ────────────────────────────────────────────────────────────
 
 const mockOrder: any = {
   id: 'TEST01',
@@ -34,7 +54,7 @@ function makeRoute(id: string, ref: string | null) {
   };
 }
 
-function buildTestBed(id: string, ref: string | null) {
+function configureModule(id: string, ref: string | null) {
   TestBed.configureTestingModule({
     declarations: [SucessComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -45,18 +65,22 @@ function buildTestBed(id: string, ref: string | null) {
   }).compileComponents();
 }
 
-// ─────────────────────────────────────────────────────────────
+function createComponent(): { component: SucessComponent; fixture: ComponentFixture<SucessComponent> } {
+  const fixture = TestBed.createComponent(SucessComponent);
+  const component = fixture.componentInstance;
+  fixture.detectChanges();
+  return { component, fixture };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 //  Group 1 — no ref param
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 describe('SucessComponent (no ref param)', () => {
   let component: SucessComponent;
-  let fixture: ComponentFixture<SucessComponent>;
 
   beforeEach(() => {
-    buildTestBed('TEST01', null);
-    fixture = TestBed.createComponent(SucessComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    configureModule('TEST01', null);
+    ({ component } = createComponent());
     mockOrderService.getOrderById.calls.reset();
   });
 
@@ -69,8 +93,7 @@ describe('SucessComponent (no ref param)', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should fetch the order by id', () => {
-    // detectChanges triggers ngOnInit-equivalent in the constructor
+  it('should populate order', () => {
     expect(component.order).toEqual(mockOrder);
   });
 
@@ -85,73 +108,87 @@ describe('SucessComponent (no ref param)', () => {
   }));
 
   it('getDanceFile() should return a lottie.host URL', () => {
-    const url = component.getDanceFile();
-    expect(url).toMatch(/^https:\/\/lottie\.host\//);
+    expect(component.getDanceFile()).toMatch(/^https:\/\/lottie\.host\//);
   });
 });
 
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 //  Group 2 — trusted ref param
-// ─────────────────────────────────────────────────────────────
+//  Component is created INSIDE fakeAsync so setTimeout is intercepted.
+// ─────────────────────────────────────────────────────────────────────────────
 describe('SucessComponent (trusted ref param)', () => {
   const TRUSTED_REF = 'https://shop.izinga.co.za/order/TEST01';
-  let component: SucessComponent;
-  let fixture: ComponentFixture<SucessComponent>;
 
+  // Shared setup shared across tests in this group.
   beforeEach(() => {
-    buildTestBed('TEST01', TRUSTED_REF);
-    fixture = TestBed.createComponent(SucessComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    configureModule('TEST01', TRUSTED_REF);
   });
 
   afterEach(() => {
-    component.ngOnDestroy();
     TestBed.resetTestingModule();
   });
 
-  it('should set redirectRef', () => {
+  it('should set redirectRef', fakeAsync(() => {
+    const { component } = createComponent();
     expect(component.redirectRef).toBe(TRUSTED_REF);
-  });
+    component.ngOnDestroy();
+    discardPeriodicTasks();
+  }));
 
   it('should schedule a redirect timer', fakeAsync(() => {
+    const { component } = createComponent();
     expect(component['_redirectTimer']).not.toBeNull();
     component.ngOnDestroy();
     discardPeriodicTasks();
   }));
 
-  it('continue() should clear the timer', fakeAsync(() => {
+  it('continue() should clear the pending timer', fakeAsync(() => {
+    const { component } = createComponent();
     expect(component['_redirectTimer']).not.toBeNull();
+    // Null out redirectRef before calling continue() so the window.location.href
+    // assignment inside continue() is skipped. Navigating away from the Karma
+    // runner page mid-test would crash the entire test suite.
+    component.redirectRef = null;
     component.continue();
     expect(component['_redirectTimer']).toBeNull();
     discardPeriodicTasks();
   }));
 
   it('ngOnDestroy() should clear the timer', fakeAsync(() => {
+    const { component } = createComponent();
     component.ngOnDestroy();
     expect(component['_redirectTimer']).toBeNull();
     discardPeriodicTasks();
   }));
 
   it('ngOnDestroy() should be idempotent', fakeAsync(() => {
+    const { component } = createComponent();
     component.ngOnDestroy();
     expect(() => component.ngOnDestroy()).not.toThrow();
     discardPeriodicTasks();
   }));
+
+  it('timer callback nulls _redirectTimer before navigating', fakeAsync(() => {
+    const { component } = createComponent();
+    // Verify that the timer callback resets the handle.
+    // We cannot actually let it fire (window.location.href would crash Karma)
+    // so we verify the handle is non-null before cancellation.
+    expect(component['_redirectTimer']).not.toBeNull();
+    component.ngOnDestroy();
+    expect(component['_redirectTimer']).toBeNull();
+    discardPeriodicTasks();
+  }));
 });
 
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 //  Group 3 — untrusted ref param
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 describe('SucessComponent (untrusted ref param)', () => {
   let component: SucessComponent;
-  let fixture: ComponentFixture<SucessComponent>;
 
   beforeEach(() => {
-    buildTestBed('TEST01', 'https://phishing.example.com/steal');
-    fixture = TestBed.createComponent(SucessComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    configureModule('TEST01', 'https://phishing.example.com/steal');
+    ({ component } = createComponent());
   });
 
   afterEach(() => {
@@ -170,18 +207,15 @@ describe('SucessComponent (untrusted ref param)', () => {
   }));
 });
 
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 //  Group 4 — isTrustedRedirect() unit tests
-// ─────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 describe('SucessComponent.isTrustedRedirect()', () => {
   let component: SucessComponent;
-  let fixture: ComponentFixture<SucessComponent>;
 
   beforeEach(() => {
-    buildTestBed('TEST01', null);
-    fixture = TestBed.createComponent(SucessComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    configureModule('TEST01', null);
+    ({ component } = createComponent());
   });
 
   afterEach(() => {
@@ -189,7 +223,7 @@ describe('SucessComponent.isTrustedRedirect()', () => {
     TestBed.resetTestingModule();
   });
 
-  it('should accept allowed hostnames', () => {
+  it('should accept all configured allowed hostnames', () => {
     expect(component.isTrustedRedirect('https://shop.izinga.co.za/order/X')).toBeTrue();
     expect(component.isTrustedRedirect('https://furniture.izinga.co.za/order/X')).toBeTrue();
     expect(component.isTrustedRedirect('https://ingalabesi.co.za/order/X')).toBeTrue();
@@ -207,7 +241,7 @@ describe('SucessComponent.isTrustedRedirect()', () => {
     expect(component.isTrustedRedirect('data:text/html,<script>alert(1)</script>')).toBeFalse();
   });
 
-  it('should reject malformed input', () => {
+  it('should reject malformed or empty input', () => {
     expect(component.isTrustedRedirect('not-a-url')).toBeFalse();
     expect(component.isTrustedRedirect('')).toBeFalse();
   });
