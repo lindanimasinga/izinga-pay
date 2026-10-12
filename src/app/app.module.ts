@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { IzingaOrderManagementService } from './service/izinga-order-management.service';
 import { StorageService } from './service/storage-service.service';
 import { PaymentService } from './service/payment.service';
-import { YocoService } from './service/yoco.service';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import {PayfastComponent} from './payfast/payfast.component'
@@ -36,8 +35,7 @@ import { SucessComponent } from './tip/sucess/sucess.component'
   providers: [    
     IzingaOrderManagementService,
     StorageService,
-    PaymentService,
-    YocoService
+    PaymentService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

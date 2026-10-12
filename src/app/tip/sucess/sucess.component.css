@@ -1,0 +1,4 @@
+.total-row {
+    border-top: 2px solid var(--btn-bg-color) !important;
+    background-color: rgba(161, 113, 49, 0.08);
+}
