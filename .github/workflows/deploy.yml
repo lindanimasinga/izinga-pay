@@ -46,7 +46,7 @@ jobs:
         uses: FirebaseExtended/action-hosting-deploy@v0.7.2
         with:
           repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_IZINGA_PAY }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
           projectId: ijudi-d19bd
           channelId: live
           target: prod
