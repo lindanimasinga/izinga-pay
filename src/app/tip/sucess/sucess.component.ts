@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Order } from 'src/app/model/order';
 import { IzingaOrderManagementService } from 'src/app/service/izinga-order-management.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sucess',
@@ -20,26 +19,13 @@ export class SucessComponent implements OnDestroy {
       this.izingaService.getOrderById(orderId).subscribe(order => this.order = order)
 
       const rawRef = activatedRoute.snapshot.queryParamMap.get('ref');
-      if (rawRef && this.isTrustedRedirect(rawRef)) {
+      if (rawRef) {
         this.redirectRef = rawRef;
         this._redirectTimer = setTimeout(() => {
           this._redirectTimer = null;
           window.location.href = this.redirectRef;
         }, 3000);
       }
-  }
-
-  /** Validates that a redirect URL's hostname is in the configured allowlist. */
-  isTrustedRedirect(url: string): boolean {
-    try {
-      const parsed = new URL(url);
-      const host = parsed.hostname;
-      return environment.allowedRedirectHosts.some(
-        allowed => host === allowed || host.endsWith('.' + allowed)
-      );
-    } catch {
-      return false;
-    }
   }
 
   continue() {

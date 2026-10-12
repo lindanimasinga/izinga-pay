@@ -2,19 +2,22 @@
  * SucessComponent spec.
  *
  * Test structure:
- *  - Groups 1 and 3 (no-ref, untrusted-ref): component has no pending timer so standard
- *    synchronous beforeEach is safe.
- *  - Group 2 (trusted-ref): the component constructor schedules a real 3-second
+ *  - Group 1 (no-ref): component has no pending timer so standard synchronous
+ *    beforeEach is safe.
+ *  - Group 2 (ref present): the component constructor schedules a real 3-second
  *    window.location.href navigation. To prevent the real timer firing during the test
- *    run, every trusted-ref test creates the component INSIDE a fakeAsync body so that
+ *    run, every ref-present test creates the component INSIDE a fakeAsync body so that
  *    setTimeout is intercepted by Angular's zone patch. The timer is cancelled at the end
  *    of each test with component.ngOnDestroy() + discardPeriodicTasks().
- *  - Group 4: pure unit tests for isTrustedRedirect(). No timer; standard setup.
  *
  * NOTE: the window.location.href assignment in the timer callback and in continue() is
  * intentionally not executed in any test — navigating away from the Karma runner page
  * would crash the test runner. The control flow surrounding those assignments (timer
  * scheduling, cancellation, and null-guard) is fully covered.
+ *
+ * NOTE: hostname-allowlist validation (isTrustedRedirect) was removed per owner decision
+ * (intentional open-redirect acceptance). The redirect is now unconditional when a ref
+ * param is present.
  */
 import {
   ComponentFixture,
@@ -113,10 +116,10 @@ describe('SucessComponent (no ref param)', () => {
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
-//  Group 2 — trusted ref param
+//  Group 2 — ref param present
 //  Component is created INSIDE fakeAsync so setTimeout is intercepted.
 // ─────────────────────────────────────────────────────────────────────────────
-describe('SucessComponent (trusted ref param)', () => {
+describe('SucessComponent (ref param present)', () => {
   const TRUSTED_REF = 'https://shop.izinga.co.za/order/TEST01';
 
   // Shared setup shared across tests in this group.
@@ -180,69 +183,3 @@ describe('SucessComponent (trusted ref param)', () => {
   }));
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-//  Group 3 — untrusted ref param
-// ─────────────────────────────────────────────────────────────────────────────
-describe('SucessComponent (untrusted ref param)', () => {
-  let component: SucessComponent;
-
-  beforeEach(() => {
-    configureModule('TEST01', 'https://phishing.example.com/steal');
-    ({ component } = createComponent());
-  });
-
-  afterEach(() => {
-    component.ngOnDestroy();
-    TestBed.resetTestingModule();
-  });
-
-  it('redirectRef should remain null for an untrusted URL', () => {
-    expect(component.redirectRef).toBeNull();
-  });
-
-  it('no timer should be scheduled for an untrusted URL', fakeAsync(() => {
-    tick(3000);
-    expect(component['_redirectTimer']).toBeNull();
-    discardPeriodicTasks();
-  }));
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-//  Group 4 — isTrustedRedirect() unit tests
-// ─────────────────────────────────────────────────────────────────────────────
-describe('SucessComponent.isTrustedRedirect()', () => {
-  let component: SucessComponent;
-
-  beforeEach(() => {
-    configureModule('TEST01', null);
-    ({ component } = createComponent());
-  });
-
-  afterEach(() => {
-    component.ngOnDestroy();
-    TestBed.resetTestingModule();
-  });
-
-  it('should accept all configured allowed hostnames', () => {
-    expect(component.isTrustedRedirect('https://shop.izinga.co.za/order/X')).toBeTrue();
-    expect(component.isTrustedRedirect('https://furniture.izinga.co.za/order/X')).toBeTrue();
-    expect(component.isTrustedRedirect('https://ingalabesi.co.za/order/X')).toBeTrue();
-    expect(component.isTrustedRedirect('https://pay.izinga.co.za/order/X')).toBeTrue();
-    expect(component.isTrustedRedirect('https://izinga.co.za/order/X')).toBeTrue();
-  });
-
-  it('should reject untrusted hostnames', () => {
-    expect(component.isTrustedRedirect('https://phishing.com/fake')).toBeFalse();
-    expect(component.isTrustedRedirect('https://evil.izinga.co.za.attacker.com/x')).toBeFalse();
-  });
-
-  it('should reject javascript: and data: URIs', () => {
-    expect(component.isTrustedRedirect('javascript:alert(1)')).toBeFalse();
-    expect(component.isTrustedRedirect('data:text/html,<script>alert(1)</script>')).toBeFalse();
-  });
-
-  it('should reject malformed or empty input', () => {
-    expect(component.isTrustedRedirect('not-a-url')).toBeFalse();
-    expect(component.isTrustedRedirect('')).toBeFalse();
-  });
-});
